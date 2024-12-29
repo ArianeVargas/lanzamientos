@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lanzamientos</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="16x16">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="./app.js"></script>
+</head>
+
+<body x-data="app()" class="bg-slate-800 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <section>
+            <h1 class="text-center text-2xl font-bold">Mis favoritos</h1> 
+            <template x-if="favorites.length > 0">
+                <button @click="removeAllFavorite" class="bg-slate-900 text-white px-3 py-1 rounded">Eliminar todos</button>
+            </template>  
+            <template x-if="launches.length > 0">
+                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mt-6">
+
+                    <template x-for="(launch, index) in launches" :key="index">
+                        <template x-if="existFavorite(launch.launch_date_unix)">
+                            <li class=" relative bg-slate-700 p-4 rounded-lg shadow-lg border ">
+                                <img class="object-cover object-center w-full "
+                                    x-bind:src="launch.links.mission_patch_small" alt="">
+                                <h1 class="mt-2 text-center" x-text="launch.mission_name"></h1>
+                                <p class="mt-1 text-sm text-center "
+                                    x-text="'Nombre del cohete: ' + launch.rocket.rocket_name">
+                                </p>
+                                <p class="mt-1 text-sm text-center "
+                                    x-text="'Año de lanzamiento: ' + launch.launch_year">
+                                </p>
+                                <button class="absolute top-2 right-2 bg-slate-300 text-white px-2 py-1 rounded"
+                                    @click="addFavorite(launch.launch_date_unix)">
+                                    <span x-show="!existFavorite(launch.launch_date_unix)">
+                                        🩶
+                                    </span>
+                                    <span x-show="existFavorite(launch.launch_date_unix)">
+                                        ❤️
+                                    </span>
+
+                                </button>
+                            </li>
+                        </template>
+                    </template>
+                </ul>
+            </template>
+            <template x-if="launches.length == 0">
+                <div class="text-center text-2xl fond-bold fixed inset-0 flex items-center justify-center bg-slate-600">
+                    <h1 class="animate-pulse">Cargando ...</h1>
+                </div>
+            </template>
+        </section>
+        <section class="mt-10">
+            <h1 class="text-center text-2xl font-bold">Lanzamientos</h1>
+            <template x-if="launches.length > 0">
+                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mt-6">
+
+                    <template x-for="(launch, index) in launches" :key="index">
+                        <li class=" relative bg-slate-700 p-4 rounded-lg shadow-lg border ">
+                            <img class="object-cover object-center w-full "
+                                x-bind:src="launch.links.mission_patch_small" alt="">
+                            <h1 class="mt-2 text-center" x-text="launch.mission_name"></h1>
+                            <p class="mt-1 text-sm text-center "
+                                x-text="'Nombre del cohete: ' + launch.rocket.rocket_name">
+                            </p>
+                            <p class="mt-1 text-sm text-center " x-text="'Año de lanzamiento: ' + launch.launch_year">
+                            </p>
+                            <button class="absolute top-2 right-2 bg-slate-300 text-white px-2 py-1 rounded"
+                                @click="addFavorite(launch.launch_date_unix)">
+                                <span x-show="!existFavorite(launch.launch_date_unix)">
+                                    🩶
+                                </span>
+                                <span x-show="existFavorite(launch.launch_date_unix)">
+                                    ❤️
+                                </span>
+
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+            <template x-if="launches.length == 0">
+                <div class="text-center text-2xl fond-bold fixed inset-0 flex items-center justify-center bg-slate-600">
+                    <h1 class="animate-pulse">Cargando ...</h1>
+                </div>
+            </template>
+        </section>
+    </div>
+
+</body>
+
+</html>
